@@ -1,0 +1,64 @@
+
+public class Tester {
+
+	/**
+	 * @param args
+	 */
+	
+	public static void preProcess() {
+		String prefix = "WSDream-QoSDataset2/";
+		String matrix = "rtMatrix"; 
+		int userNumber = 339; 
+		int itemNumber = 5825;
+		float[][] removedMatrix;
+		float[][] randomedMatrix;
+		Predictor predictor = new Predictor();
+		
+		
+		
+		float[][] originalMatrix = UtilityFunctions.readMatrix(prefix + matrix + ".txt", userNumber, itemNumber);
+		float density = (float)0.1;
+		float random = (float)0.03;
+		
+		//UtilityFunctions.writeMatrix(removedMatrix, "removed/rtMatrix" + density);
+		//for(int i = 2; i <= 10; i++) {
+			density = (float)0.05;
+			removedMatrix = UtilityFunctions.removeEntry(originalMatrix, density, "removed//" + matrix + "30");			
+			randomedMatrix = UtilityFunctions.randomEntry(removedMatrix, 0.03);
+			UtilityFunctions.writeMatrix(randomedMatrix, "removed/rtMatrix" + density);
+		//}
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub	
+		Tester.preProcess();
+		String prefix = "WSDream-QoSDataset2/";
+		String matrix = "rtMatrix"; 
+		int userNumber = 339; 
+		int itemNumber = 5825;
+		float[][] removedMatrix;
+		float[][] randomedMatrix;
+		Predictor predictor = new Predictor();
+		
+		
+		
+		float[][] originalMatrix = UtilityFunctions.readMatrix(prefix + matrix + ".txt", userNumber, itemNumber);
+		
+		//UtilityFunctions.writeTestMatrix300x500(originalMatrix, prefix + "test" + matrix + ".txt");
+		//float[][] originalMatrix = UtilityFunctions.readMatrix(prefix + "test" + matrix + ".txt", 300, 500);
+		
+		float density = (float)0.05;
+		float random = (float)0.03;
+		int topK = 34;
+		int topR = 10;
+		randomedMatrix = UtilityFunctions.readMatrix("removed/rtMatrix" + density, userNumber, itemNumber);
+		
+		UtilityFunctions.writeFile("result.txt", "Density = " + density + "\tRandom = " + random + "\tTopR = " + topR + "\r\n");
+		predictor.run8Methods(originalMatrix, randomedMatrix, random, topK, topR);
+		System.out.println();
+		//removedMatrix = UtilityFunctions.removeEntry(originalMatrix, density, "removed/" + matrix + "30");
+		
+
+	}
+
+}
